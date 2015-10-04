@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by green on 05.10.2015.
  *
- * Класс сервлета отображающий историю операций
+ * РљР»Р°СЃСЃ СЃРµСЂРІР»РµС‚Р° РѕС‚РѕР±СЂР°Р¶Р°СЋС‰РёР№ РёСЃС‚РѕСЂРёСЋ РѕРїРµСЂР°С†РёР№
  *
  */
 public class CheckOperations extends HttpServlet {
@@ -46,13 +46,13 @@ public class CheckOperations extends HttpServlet {
 
             if (attr instanceof ArrayList){
                 ArrayList list = (ArrayList) attr;
-                out.println("<h1>Список операций:</h1>");
+                out.println("<h1>РЎРїРёСЃРѕРє РѕРїРµСЂР°С†РёР№:</h1>");
                 for (Object str : list) {
                     out.println("<h3>"+str+"</h3>");
                 }
 
             }else{
-                out.println("<h1>Операции не найдены</h1>");
+                out.println("<h1>РћРїРµСЂР°С†РёРё РЅРµ РЅР°Р№РґРµРЅС‹</h1>");
             }
             out.println("<h1>"+((TestObject)request.getServletContext().getAttribute("obj")).getName()+"</h1>");
 

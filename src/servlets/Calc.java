@@ -15,9 +15,9 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by green on 05.10.2015.
  *
- * Наш сервлет-калькулятор
+ * РќР°С€ СЃРµСЂРІР»РµС‚-РєР°Р»СЊРєСѓР»СЏС‚РѕСЂ
  *
- * Для выполнений операций нужно через параметры передавать ему операнды и желаемую операцию над ними
+ * Р”Р»СЏ РІС‹РїРѕР»РЅРµРЅРёР№ РѕРїРµСЂР°С†РёР№ РЅСѓР¶РЅРѕ С‡РµСЂРµР· РїР°СЂР°РјРµС‚СЂС‹ РїРµСЂРµРґР°РІР°С‚СЊ РµРјСѓ РѕРїРµСЂР°РЅРґС‹ Рё Р¶РµР»Р°РµРјСѓСЋ РѕРїРµСЂР°С†РёСЋ РЅР°Рґ РЅРёРјРё
  *
  */
 public class Calc extends HttpServlet {
@@ -44,42 +44,42 @@ public class Calc extends HttpServlet {
 
         try {
 
-            // считывание параметров
+            // СЃС‡РёС‚С‹РІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂРѕРІ
             double one = Double.valueOf(request.getParameter("one"));
             double two = Double.valueOf(request.getParameter("two"));
             String opearation = request.getParameter("operation");
 
-            // определение или создание сессии
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ РёР»Рё СЃРѕР·РґР°РЅРёРµ СЃРµСЃСЃРёРё
             HttpSession session = request.getSession(true);
 
             request.getServletContext().setAttribute("obj", new TestObject("TestName"));
 
 
-            // получение типа операции
+            // РїРѕР»СѓС‡РµРЅРёРµ С‚РёРїР° РѕРїРµСЂР°С†РёРё
             OperationType operType = OperationType.valueOf(opearation.toUpperCase());
 
-            // калькуляция
+            // РєР°Р»СЊРєСѓР»СЏС†РёСЏ
             double result = calcResult(operType, one, two);
 
             ArrayList<String> listOperations;
 
-            // для новой сессии создаем новый список
+            // РґР»СЏ РЅРѕРІРѕР№ СЃРµСЃСЃРёРё СЃРѕР·РґР°РµРј РЅРѕРІС‹Р№ СЃРїРёСЃРѕРє
             if (session.isNew()) {
                 listOperations = new ArrayList<String>();
             }
-            else { // иначе получаем список из атрибутов сессии
+            else { // РёРЅР°С‡Рµ РїРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РёР· Р°С‚СЂРёР±СѓС‚РѕРІ СЃРµСЃСЃРёРё
                 listOperations = (ArrayList<String>) session.getAttribute("formula");
             }
 
-            // добавление новой операции в список и атрибут сессии
+            // РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ РѕРїРµСЂР°С†РёРё РІ СЃРїРёСЃРѕРє Рё Р°С‚СЂРёР±СѓС‚ СЃРµСЃСЃРёРё
             listOperations.add(one + " " + operType.getStringValue() + " " + two + " = " + result);
             session.setAttribute("formula", listOperations);
 
 
-            // вывод всех операций
-            out.println("<h1>ID вашей сессии равен: " + session.getId() + "</h1>");
+            // РІС‹РІРѕРґ РІСЃРµС… РѕРїРµСЂР°С†РёР№
+            out.println("<h1>ID РІР°С€РµР№ СЃРµСЃСЃРёРё СЂР°РІРµРЅ: " + session.getId() + "</h1>");
 
-            out.println("<h3>Список операций (всего:" + listOperations.size() + ") </h3>");
+            out.println("<h3>РЎРїРёСЃРѕРє РѕРїРµСЂР°С†РёР№ (РІСЃРµРіРѕ:" + listOperations.size() + ") </h3>");
 
             for (String oper : listOperations) {
                 out.println("<h3>" + oper + "</h3>");
@@ -87,12 +87,12 @@ public class Calc extends HttpServlet {
 
 
         } catch (Exception ex) {
-            // предупреждение пользователю в случае ошибки
-            out.println("<h3 style=\"color:red;\">Возникла ошибка. Проверьте параметры</h3>");
-            out.println("<h3>Имена параметров должны быть one, two, operation</h3>");
-            out.println("<h3>Operation должен принимать 1 из 4 значений: add, subtract, multiply, divide</h3>");
-            out.println("<h3>Значения one и two должны быть числами</h3>");
-            out.println("<h1>Пример</h1>");
+            // РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РІ СЃР»СѓС‡Р°Рµ РѕС€РёР±РєРё
+            out.println("<h3 style=\"color:red;\">Р’РѕР·РЅРёРєР»Р° РѕС€РёР±РєР°. РџСЂРѕРІРµСЂСЊС‚Рµ РїР°СЂР°РјРµС‚СЂС‹</h3>");
+            out.println("<h3>РРјРµРЅР° РїР°СЂР°РјРµС‚СЂРѕРІ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ one, two, operation</h3>");
+            out.println("<h3>Operation РґРѕР»Р¶РµРЅ РїСЂРёРЅРёРјР°С‚СЊ 1 РёР· 4 Р·РЅР°С‡РµРЅРёР№: add, subtract, multiply, divide</h3>");
+            out.println("<h3>Р—РЅР°С‡РµРЅРёСЏ one Рё two РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ С‡РёСЃР»Р°РјРё</h3>");
+            out.println("<h1>РџСЂРёРјРµСЂ</h1>");
             out.println("<h3>?one=1&two=3&operation=add</h3>");
 
         } finally {
@@ -140,11 +140,11 @@ public class Calc extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Сервлет - калькулятор";
+        return "РЎРµСЂРІР»РµС‚ - РєР°Р»СЊРєСѓР»СЏС‚РѕСЂ";
     }// </editor-fold>
 
 
-    // калькуляция
+    // РєР°Р»СЊРєСѓР»СЏС†РёСЏ
     private double calcResult(OperationType operType, double one, double two) {
         double result = 0;
         switch (operType) {
