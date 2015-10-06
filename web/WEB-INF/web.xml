@@ -11,4 +11,28 @@
         <servlet-name>CheckOperations</servlet-name>
         <servlet-class>servlets.CheckOperations</servlet-class>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Calc</servlet-name>
+        <url-pattern>/Calc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckOperations</servlet-name>
+        <url-pattern>/CheckOperations</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error/4xx.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/4xx.html</location>
+    </error-page>
 </web-app>

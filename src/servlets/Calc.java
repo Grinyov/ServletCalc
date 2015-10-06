@@ -87,13 +87,7 @@ public class Calc extends HttpServlet {
 
 
         } catch (Exception ex) {
-            // предупреждение пользователю в случае ошибки
-            out.println("<h3 style=\"color:red;\">Возникла ошибка. Проверьте параметры</h3>");
-            out.println("<h3>Имена параметров должны быть one, two, operation</h3>");
-            out.println("<h3>Operation должен принимать 1 из 4 значений: add, subtract, multiply, divide</h3>");
-            out.println("<h3>Значения one и two должны быть числами</h3>");
-            out.println("<h1>Пример</h1>");
-            out.println("<h3>?one=1&two=3&operation=add</h3>");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
         } finally {
             out.println("</body>");
@@ -172,3 +166,4 @@ public class Calc extends HttpServlet {
         return result;
     }
 }
+
