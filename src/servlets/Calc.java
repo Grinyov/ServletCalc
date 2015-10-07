@@ -6,6 +6,9 @@ import calc.OperationType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +24,8 @@ import javax.servlet.http.HttpSession;
  *
  */
 public class Calc extends HttpServlet {
+
+    public static final String SESSION_MAP = "sessionMap";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,6 +37,14 @@ public class Calc extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // мапа для записи операций из контекста
+
+        Map<String, List> sessionMap = (Map<String,List>)request.getServletContext().getAttribute(SESSION_MAP);
+
+        if (sessionMap==null) {
+            sessionMap = new HashMap<String, List>();
+        }
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -66,8 +79,7 @@ public class Calc extends HttpServlet {
             // для новой сессии создаем новый список
             if (session.isNew()) {
                 listOperations = new ArrayList<String>();
-            }
-            else { // иначе получаем список из атрибутов сессии
+            } else { // иначе получаем список из атрибутов сессии
                 listOperations = (ArrayList<String>) session.getAttribute("formula");
             }
 
@@ -75,15 +87,42 @@ public class Calc extends HttpServlet {
             listOperations.add(one + " " + operType.getStringValue() + " " + two + " = " + result);
             session.setAttribute("formula", listOperations);
 
+            out.println("<table cellpadding=\"20\">");
+            out.println("<tr>");
+            out.println("<td style=\"vertical-align:top;\">");
+
 
             // вывод всех операций
-            out.println("<h1>ID вашей сессии равен: " + session.getId() + "</h1>");
-
-            out.println("<h3>Список операций (всего:" + listOperations.size() + ") </h3>");
+            out.println("<h1>"+ session.getId() +"</h1>");
 
             for (String oper : listOperations) {
                 out.println("<h3>" + oper + "</h3>");
             }
+
+            sessionMap.put(session.getId(), listOperations);
+            getServletContext().setAttribute(SESSION_MAP, sessionMap);
+
+
+            out.println("</td>");
+            out.println("<td style=\"vertical-align:top;\">");
+
+            for (Map.Entry<String, List> entry : sessionMap.entrySet()) {
+                String sessionId = entry.getKey();
+                List listOper = entry.getValue();
+
+                out.println("<h1 style=\"color:red\">" + sessionId + "</h1>");
+
+                for (Object str : listOper) {
+                    out.println("<h3>" + str + "</h3>");
+                }
+
+
+            }
+
+
+            out.println("</td>");
+            out.println("</tr>");
+            out.println("</table>");
 
 
         } catch (Exception ex) {
@@ -137,7 +176,6 @@ public class Calc extends HttpServlet {
         return "Сервлет - калькулятор";
     }// </editor-fold>
 
-
     // калькуляция
     private double calcResult(OperationType operType, double one, double two) {
         double result = 0;
@@ -166,4 +204,3 @@ public class Calc extends HttpServlet {
         return result;
     }
 }
-
